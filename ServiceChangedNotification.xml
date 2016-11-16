@@ -1,0 +1,109 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Header>
+    <ns1:MultiSpeakMsgHeader soapenv:actor="http://schemas.xmlsoap.org/soap/actor/next" soapenv:mustUnderstand="0" AppName="MyApp" Company="testcis" MajorVersion="4" MinorVersion="1" Pwd="testcis" SessionID="1468510274816" TimeStamp="2016-07-14T15:31:14.929Z" UserID="testcis" xmlns:ns1="http://www.multispeak.org/Version_4.1_Release" />
+  </soapenv:Header>
+  <soapenv:Body>
+    <ServiceLocationChangedNotification xmlns="http://www.multispeak.org/Version_4.1_Release">
+      <changedServiceLocations>
+        <serviceLocation objectID="41004100">
+          <extensionsList>
+            <extensionsItem>
+              <extName>biMotorHp1</extName>
+              <extValue>0.0</extValue>
+            </extensionsItem>
+            <extensionsItem>
+              <extName>biTempPermCd</extName>
+              <extValue>P</extValue>
+            </extensionsItem>
+            <extensionsItem>
+              <extName>biDetLine</extName>
+              <extValue>PLH /10</extValue>
+            </extensionsItem>
+          </extensionsList>
+          <gridLocation>4100410000</gridLocation>
+          <timeZone DSTEnabled="true" UTCOffset="-8.0" name="Pacific Standard Time">U</timeZone>
+          <customerID>707045</customerID>
+          <serviceAddress>
+            <address1>One University Place</address1>
+            <city>Shreveport</city>
+            <state>LA</state>
+            <postalCode>71115</postalCode>
+          </serviceAddress>
+          <network>
+            <boardDist>TRK</boardDist>
+            <taxDist>
+            </taxDist>
+            <franchiseDist>
+            </franchiseDist>
+            <schoolDist>
+            </schoolDist>
+            <district>
+            </district>
+            <county>CA</county>
+            <cityCode>
+            </cityCode>
+            <section>0</section>
+            <subdivision>PLH</subdivision>
+            <lot>10</lot>
+          </network>
+          <electricServiceList>
+            <electricService objectID="41004100+1">
+              <customerID>707045</customerID>
+              <accountNumber>5211521136</accountNumber>
+              <serviceLocationID>52115211</serviceLocationID>
+              <meterBaseID>52115211+1</meterBaseID>
+              <electricMeterID>2E02023H</electricMeterID>
+              <electricLocationFields>
+                <substationCode>TR</substationCode>
+                <feederCode>5</feederCode>
+                <eaLoc />
+                <transformerBankID>5211521100</transformerBankID>
+                <linemenServiceArea>
+                </linemenServiceArea>
+              </electricLocationFields>
+              <specialNeeds>
+              </specialNeeds>
+              <loadMgmt>N</loadMgmt>
+              <revenueClass>ELECT1</revenueClass>
+              <serviceStatus>1</serviceStatus>
+              <billingCycle>1</billingCycle>
+              <route>101</route>
+              <connectDate>2003-11-04T08:00:00.000Z</connectDate>
+            </electricService>
+          </electricServiceList>
+          <waterServiceList>
+            <waterService objectID="41004100+2">
+              <customerID>707045</customerID>
+              <accountNumber>5211521136</accountNumber>
+              <serviceLocationID>52115211</serviceLocationID>
+              <waterMeterID>91777744</waterMeterID>
+              <revenueClass>WATER1</revenueClass>
+              <serviceStatus>1</serviceStatus>
+              <billingCycle>1</billingCycle>
+              <route>163</route>
+              <connectDate>2003-11-04T08:00:00.000Z</connectDate>
+            </waterService>
+          </waterServiceList>
+          <contactInfo>
+            <phoneList>
+              <phoneNumber>
+                <phone>
+                  <areaCode>318</areaCode>
+                  <localNumber>1112222</localNumber>
+                </phone>
+                <phoneType>Home</phoneType>
+              </phoneNumber>
+              <phoneNumber>
+                <phone>
+                  <areaCode>318</areaCode>
+                  <localNumber>2223333</localNumber>
+                </phone>
+                <phoneType>Business</phoneType>
+              </phoneNumber>
+            </phoneList>
+          </contactInfo>
+        </serviceLocation>
+      </changedServiceLocations>
+    </ServiceLocationChangedNotification>
+  </soapenv:Body>
+</soapenv:Envelope>
