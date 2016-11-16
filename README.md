@@ -73,7 +73,7 @@ How long does failover take… need transaction log back ups… instead of simpl
 # High Availability Setups for Servers
 
 ## Windows NLB (Network Load Balancer)
-Installing NLB (Brian Watson set this up on amp-ha1 and amp-ha2)
+Installing NLB (set this up on amp-ha1 and amp-ha2)
 
 Floating IP -> 10.87.1.90
 The floating IP ponints to both amp-ha1 and amp-ha2.  NLB only points to one server.  The other server
