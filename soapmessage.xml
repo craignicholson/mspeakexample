@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <soap:Header><MultiSpeakMsgHeader BuildString="PR" UserID="niscmr" Pwd="niscmr" AppName="TestApp for HAProxy" Company="Spacely's Sprockets" xmlns="http://www.multispeak.org/Version_4.1_Release"/></soap:Header>
+    <soap:Body>
+        <InitiateMeterReadingsByMeterID xmlns="http://www.multispeak.org/Version_4.1_Release">
+            <meterIDs>
+                <meterID meterNo="0" serviceType="Electric" objectID="0" utility="HA-Test">What is this for?</meterID>
+            </meterIDs><responseURL/>
+            <transactionID>0e76f850-aa95-4205-a602-b37809c7dfab</transactionID>
+            <expTime>0</expTime>
+        </InitiateMeterReadingsByMeterID>
+    </soap:Body>
+</soap:Envelope>
