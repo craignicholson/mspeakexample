@@ -763,6 +763,7 @@ The idea to take home is to show the count in the database and show we have not 
 
 
 # References
+
 * http://www.slideshare.net/haproxytech/haproxy-best-practice
 * HA High Availability - https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts
 * SQL High Availability - https://www.brentozar.com/archive/2011/12/sql-server-high-availability-disaster-recovery-basics-webcast/
@@ -779,11 +780,11 @@ The idea to take home is to show the count in the database and show we have not 
 * https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-using-aspnet-35-and-aspnet-45
 * https://blogs.msdn.microsoft.com/vijaysk/2012/10/11/iis-8-whats-new-website-settings/
 * https://www.upcloud.com/support/haproxy-load-balancer-centos/
-<<<<<<< HEAD
 * https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
 * https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 * https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
 * https://docs.mongodb.com/v3.2/tutorial/add-replica-set-arbiter/
+* https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
 
 
 > db.Vendor.findOne();
@@ -819,5 +820,3 @@ Vendor
 	"SettingAppendSerialNo" : false,
 	"SettingSourceSerialNo" : null
 }
-=======
-* https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
