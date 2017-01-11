@@ -27,7 +27,7 @@ namespace MultiSpeakBrokerLoadTest
 		/// <param name="args">The command-line arguments.</param>
 		public static void Main(string[] args)
 		{
-			int requests = 500;  //86400, one command per second over 24 hours
+			int requests = 250;  //86400, one command per second over 24 hours
 			try {
 				if (args.Length > 0)
 					requests = Convert.ToInt32(args[0]);
