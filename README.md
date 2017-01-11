@@ -785,38 +785,3 @@ The idea to take home is to show the count in the database and show we have not 
 * https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
 * https://docs.mongodb.com/v3.2/tutorial/add-replica-set-arbiter/
 * https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
-
-
-> db.Vendor.findOne();
-{
-	"_id" : ObjectId("57b74d04a3d125228cffb29b"),
-	"VendorName" : "RF Electric",
-	"MultiSpeakVersion" : "3",
-	"MRCB_UserID" : "",
-	"MRCB_Password" : "",
-	"CDCB_UserID" : "",
-	"CDCB_Password" : "",
-	"Info" : "ReadSource"
-}
-
-{ "_id" : ObjectId("583efe8c1ea14011bcdd5a20"), "Company" : "Test", "ReadSource" : "Laor" }
-
-
-BrokeredRequest
-CompanyReadSource
-Subscriber
-User
-Vendor
-
-{
-	"_id" : ObjectId("57b74dffa3d125228cffb2a2"),
-	"MeterReadSource" : "RF Electric",
-	"Type" : "MSpeak4",
-	"Channel" : "ChannelMSpeak4AccountChangedNotification",
-	"Url" : "http://localhost/Simulators/MultiSpeak/416/MDM_Server.asmx",
-	"UserID" : "electsolve",
-	"Password" : "electsolve123",
-	"AMIMeterType" : "MeterIdentifier",
-	"SettingAppendSerialNo" : false,
-	"SettingSourceSerialNo" : null
-}
