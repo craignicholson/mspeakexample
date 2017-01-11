@@ -11,9 +11,10 @@ AMP request : The Command Brokering is to be available 100% of the time.
 * Add https to Haproxy
 * ASP.net core -> run on linux
 
-# Hardware (2016-10-31)
+# Hardware (2016-11-30)
 Cores and CPU is dependant on what is available when purchasing the hardware.
 
+this is really amp-broker01, to use a more precise naming schema. 
 * amp-ha1 (10.86.1.91) Windows Server 2012, with IIS, running ASP.net and .Net 4.0 and above, 1 instance mongodb
     * Dual E5-2643 v3 Processors (6 cores @3.4–3.7GHz each)
     * 64 GB of RAM - * MB RAM calculate size of mongdb for 400,000 records. RAM needed for Web App and Server?
@@ -24,13 +25,30 @@ Cores and CPU is dependant on what is available when purchasing the hardware.
     * 64 GB of RAM - * MB RAM calculate size of mongdb for 400,000 records.
     * 2x Intel 320 300GB SATA SSDs (RAID 1) (See the mongodb section on calculation fo the space)
     * Dual 10 Gbps network (Intel X540/I350 NDC)
-* ??????? (10.87.1.95) CentOS, port 80 open, with HAProxy installed.
+* amp-ha3 (?) Windows Server 2012, with IIS, running ASP.net and .Net 4.0 and above, 1 instance of mongodb and arbiter
+    * Dual E5-2643 v3 Processors (6 cores @3.4–3.7GHz each)
+    * 64 GB of RAM - * MB RAM calculate size of mongdb for 400,000 records.
+    * 2x Intel 320 300GB SATA SSDs (RAID 1) (See the mongodb section on calculation fo the space)
+    * Dual 10 Gbps network (Intel X540/I350 NDC)    
+* haproxy-01 (10.87.1.95) CentOS, port 80 open and/or 443, with HAProxy installed.
     * Dual E5-2650 Processors (8 cores @2.0–2.8GHz each)
     * 64 GB of RAM (4x 16 GB DIMMs)
     * 2x Seagate Constellation 7200RPM 1TB SATA HDDs (RAID 10) (Logs)
     * Dual 10 Gbps network (Intel X540/I350 NDC) - Internal (DMZ) Traffic
     * Dual 10 Gbps network (Intel X540) - External Traffic
     * http://cbonte.github.io/haproxy-dconv/1.7/intro.html#3.5
+* haproxy-02 (10.87.1.95) CentOS, port 80 open and/or 443, with HAProxy installed.
+    * Dual E5-2650 Processors (8 cores @2.0–2.8GHz each)
+    * 64 GB of RAM (4x 16 GB DIMMs)
+    * 2x Seagate Constellation 7200RPM 1TB SATA HDDs (RAID 10) (Logs)
+    * Dual 10 Gbps network (Intel X540/I350 NDC) - Internal (DMZ) Traffic
+    * Dual 10 Gbps network (Intel X540) - External Traffic
+    * http://cbonte.github.io/haproxy-dconv/1.7/intro.html#3.5
+
+
+http traffic - Ports - 80, 443, or figure out what AMP or host prefers.
+mongo ports - 27017, 27018, 27019, 28017 web status
+Remember when - 
 
 The amp-ha1 and amp-ha2 need to reserve room for normal operations in memory and show only consume
 75% of the RAM, which is 48GB of data in memory for these servers.  To be safe we can just cap the
@@ -152,7 +170,11 @@ be better used by the application.
 
 ## How to SSH using windows
 
-## How to SSH using POSIX
+## How to SSH using POSIX 
+
+> ssh root@10.87.1.95
+> 3lects01ve!
+
 
 Failover Options – Single Site Single Subnet
 
@@ -463,6 +485,136 @@ db.inventory.remove({})
 Review 
 > db.BrokeredRequest.find({},{_id:0,ClientRequestDate:1,ClientTransactionID:1}).sort( { ClientRequestDate: 1 } )
 ## Replica Set Setup
+Windows Crap
+* download msi
+* Run installer - it will put the app here: 
+
+* Create your database and log directories somewhere....
+mkdir C:\mongodata\db
+mkdir C:\mongodata\log
+
+sc.exe create MongoDB binPath= "\"C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe\" --service --config=\"C:\mongodata\mongod.cfg\"" DisplayName= "MongoDB" start= "auto"
+
+
+--you will need to run this from CMD with Adminstrator Privilages, else you will get 
+Error connecting to the Service Control Manager: Access is denied. (5)
+in the log file which you can view in note pad if you want.
+
+"C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --config "C:\mongodata\mongod.cfg" --install
+net start MongoDB
+
+-- replica set stuff 
+
+Add mongod.cfg to C:\mongodata
+
+```
+systemLog:
+    destination: file
+    path: c:\mongodata\log\mongod.log
+storage:
+    dbPath: c:\mongodata\db
+replication:
+    replSetName: rs0
+
+```
+
+Use rs.initiate() on one and only one member of the replica set:
+```
+    rs.initiate()
+```
+
+Use rs.conf() to display the replica set configuration object:
+
+```
+    rs.conf()
+
+{
+   "_id" : "rs0",
+   "version" : 1,
+   "members" : [
+      {
+         "_id" : 1,
+         "host" : "mongodb0.example.net:27017"
+      }
+   ]
+}
+```
+Add the remaining members with the rs.add() method. You must be connected to the primary to add members to a replica set.
+
+rs.add() can, in some cases, trigger an election. If the mongod you are connected to becomes a secondary, you need to connect the mongo shell to the new primary to continue adding new replica set members. Use rs.status() to identify the primary in the replica set.
+
+The following example adds two members:
+
+rs.add("amp-ha2")
+When complete, you have a fully functional replica set. The new replica set will elect a primary.
+
+
+rs.conf()
+rs.status()
+
+### arbiter for less than 3 mongo instances
+
+--To remove mongodb and add your own flavor or the week
+net stop MongoDB
+"C:\Program Files\MongoDB\Server\3.4\bin\mongod.exe" --remove
+
+Install mongodb the 3 machines
+
+### Connectivity
+
+Ensure that network traffic can pass between all members of the set and all clients in the network securely and efficiently. Consider the following:
+
+Establish a virtual private network. Ensure that your network topology routes all traffic between members within a single site over the local area network.
+Configure access control to prevent connections from unknown clients to the replica set.
+Configure networking and firewall rules so that incoming and outgoing packets are permitted only on the default MongoDB port and only from within your deployment.
+Finally ensure that each member of a replica set is accessible by way of resolvable DNS or hostnames. You should either configure your DNS names appropriately or set up your systems’ /etc/hosts file to reflect this configuration.
+
+Start each mongod on each server using this
+```
+    mongod --replSet "rs0"
+
+```
+	
+### Initiate the replica set.
+
+Use rs.initiate() on one and only one member of the replica set:
+```
+    rs.initiate()
+```
+
+MongoDB initiates a set that consists of the current member and that uses the default replica set configuration.
+
+### Verify the initial replica set configuration.
+
+Use rs.conf() to display the replica set configuration object:
+
+```
+    rs.conf()
+```
+
+### Add the remaining members to the replica set.
+
+Add the remaining members with the rs.add() method. You must be connected to the primary to add members to a replica set.
+
+rs.add() can, in some cases, trigger an election. If the mongod you are connected to becomes a secondary, you need to connect the mongo shell to the new primary to continue adding new replica set members. Use rs.status() to identify the primary in the replica set.
+
+The following example adds two members:
+
+rs.add("mongodb1.example.net")
+rs.add("mongodb2.example.net")
+When complete, you have a fully functional replica set. The new replica set will elect a primary.
+
+### Check the status of the replica set.
+
+Use the rs.status() operation:
+
+rs.status()
+
+## Connection String for the Applications
+```
+    mongodb://[electsolve:electsolve]Server1:27017,Server2:27017,Server3:27017?replicaSet=rs0
+```
+
 
 ## CentOS7 Logs for debugging
 
@@ -535,6 +687,76 @@ Oct 28 16:06:58 amp-linux haproxy[10543]: 192.168.97.149:61420 [28/Oct/2016:16:0
 Oct 28 16:07:07 amp-linux haproxy[10543]: 192.168.97.149:61420 [28/Oct/2016:16:06:58.854] http-in backend_servers/amp-ha2 5920/0/11/2927/8884 200 37487 - - ---- 1/1/0/0/0 0/0 "GET /MultiSpeak/416/1/MDM_Server.asmx HTTP/1.1"
 ```
 
+# Demo Example
+## Show  HAProxy Setup
+> ssh root@10.87.1.95
+> 3lects01ve!
+
+Explain the config and how we add new server to the load...
+
+## Show the two web servers or IIS Apps
+
+* amp-ha1
+* amp-ha2
+
+Clear the logs
+C:\MultiSpeakBroker\Log
+
+
+Show or clear the Nlog files.
+
+## Clear Mongo
+> mongo 10.86.1.34
+MongoDB shell version: 3.2.10
+connecting to: 10.86.1.34/test
+
+> show dbs
+CVR                   45.932GB
+MultiSpeakBroker       0.078GB
+MultiSpeakBrokerLoad   0.078GB
+admin                  0.078GB
+local                  0.078GB
+> use MultiSpeakBrokerLoad
+switched to db MultiSpeakBrokerLoad
+> 
+
+
+> use MultiSpeakBrokerLoad
+switched to db MultiSpeakBrokerLoad
+> show collections
+BrokeredRequest
+CompanyReadSource
+Subscriber
+User
+Vendor
+system.indexes
+
+> db.BrokeredRequest.find().count()
+106
+
+> db.BrokeredRequest.remove({})
+WriteResult({ "nRemoved" : 106 })
+
+> 
+
+## Tests
+
+### 100% Up time
+View the Results
+* amp-ha1 and amp-ha2 logs should have only even or odd values in each log file
+
+
+### Kill 
+stop amp-ha2 (stop) around 10th request
+restart around 90th request...
+
+View the Results
+* amp-ha1 should be even or odd up to 10th request and then have all the requests.
+and amp-ha2 should start picking up records around 100th requests.
+
+The idea to take home is to show the count in the database and show we have not lost any data.
+
+
 # References
 * http://www.slideshare.net/haproxytech/haproxy-best-practice
 * HA High Availability - https://www.digitalocean.com/community/tutorials/an-introduction-to-haproxy-and-load-balancing-concepts
@@ -553,3 +775,41 @@ Oct 28 16:07:07 amp-linux haproxy[10543]: 192.168.97.149:61420 [28/Oct/2016:16:0
 * https://blogs.msdn.microsoft.com/vijaysk/2012/10/11/iis-8-whats-new-website-settings/
 * https://www.upcloud.com/support/haproxy-load-balancer-centos/
 * https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
+* https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+* https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
+* https://docs.mongodb.com/v3.2/tutorial/add-replica-set-arbiter/
+
+
+> db.Vendor.findOne();
+{
+	"_id" : ObjectId("57b74d04a3d125228cffb29b"),
+	"VendorName" : "RF Electric",
+	"MultiSpeakVersion" : "3",
+	"MRCB_UserID" : "",
+	"MRCB_Password" : "",
+	"CDCB_UserID" : "",
+	"CDCB_Password" : "",
+	"Info" : "ReadSource"
+}
+
+{ "_id" : ObjectId("583efe8c1ea14011bcdd5a20"), "Company" : "Test", "ReadSource" : "Laor" }
+
+
+BrokeredRequest
+CompanyReadSource
+Subscriber
+User
+Vendor
+
+{
+	"_id" : ObjectId("57b74dffa3d125228cffb2a2"),
+	"MeterReadSource" : "RF Electric",
+	"Type" : "MSpeak4",
+	"Channel" : "ChannelMSpeak4AccountChangedNotification",
+	"Url" : "http://localhost/Simulators/MultiSpeak/416/MDM_Server.asmx",
+	"UserID" : "electsolve",
+	"Password" : "electsolve123",
+	"AMIMeterType" : "MeterIdentifier",
+	"SettingAppendSerialNo" : false,
+	"SettingSourceSerialNo" : null
+}
