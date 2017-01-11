@@ -712,6 +712,9 @@ C:\MultiSpeakBroker\Log
 Show or clear the Nlog files.
 
 ## Clear Mongo
+
+```shell
+
 > mongo 10.86.1.34
 MongoDB shell version: 3.2.10
 connecting to: 10.86.1.34/test
@@ -724,11 +727,7 @@ admin                  0.078GB
 local                  0.078GB
 > use MultiSpeakBrokerLoad
 switched to db MultiSpeakBrokerLoad
-> 
 
-
-> use MultiSpeakBrokerLoad
-switched to db MultiSpeakBrokerLoad
 > show collections
 BrokeredRequest
 CompanyReadSource
@@ -743,7 +742,7 @@ system.indexes
 > db.BrokeredRequest.remove({})
 WriteResult({ "nRemoved" : 106 })
 
-> 
+```
 
 ## Tests
 
