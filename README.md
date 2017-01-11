@@ -694,8 +694,9 @@ Oct 28 16:07:07 amp-linux haproxy[10543]: 192.168.97.149:61420 [28/Oct/2016:16:0
 
 # Demo Example
 ## Show  HAProxy Setup
-> ssh root@10.87.1.95
-> 3lects01ve!
+
+	> ssh root@10.87.1.95
+
 
 Explain the config and how we add new server to the load...
 
