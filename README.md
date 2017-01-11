@@ -15,6 +15,11 @@ AMP request : The Command Brokering is to be available 100% of the time.
 Cores and CPU is dependant on what is available when purchasing the hardware.
 
 this is really amp-broker01, to use a more precise naming schema. 
+
+# Hardware (2016-10-31)
+Cores and CPU is dependant on what is available when purchasing the hardware.
+
+
 * amp-ha1 (10.86.1.91) Windows Server 2012, with IIS, running ASP.net and .Net 4.0 and above, 1 instance mongodb
     * Dual E5-2643 v3 Processors (6 cores @3.4–3.7GHz each)
     * 64 GB of RAM - * MB RAM calculate size of mongdb for 400,000 records. RAM needed for Web App and Server?
@@ -30,7 +35,7 @@ this is really amp-broker01, to use a more precise naming schema.
     * 64 GB of RAM - * MB RAM calculate size of mongdb for 400,000 records.
     * 2x Intel 320 300GB SATA SSDs (RAID 1) (See the mongodb section on calculation fo the space)
     * Dual 10 Gbps network (Intel X540/I350 NDC)    
-* haproxy-01 (10.87.1.95) CentOS, port 80 open and/or 443, with HAProxy installed.
+* haproxy-01 (10.87.1.95) CentOS, port 80 open and/or 443, with HAProxy installed
     * Dual E5-2650 Processors (8 cores @2.0–2.8GHz each)
     * 64 GB of RAM (4x 16 GB DIMMs)
     * 2x Seagate Constellation 7200RPM 1TB SATA HDDs (RAID 10) (Logs)
@@ -48,7 +53,6 @@ this is really amp-broker01, to use a more precise naming schema.
 
 http traffic - Ports - 80, 443, or figure out what AMP or host prefers.
 mongo ports - 27017, 27018, 27019, 28017 web status
-Remember when - 
 
 The amp-ha1 and amp-ha2 need to reserve room for normal operations in memory and show only consume
 75% of the RAM, which is 48GB of data in memory for these servers.  To be safe we can just cap the
@@ -91,7 +95,8 @@ How long does failover take… need transaction log back ups… instead of simpl
 # High Availability Setups for Servers
 
 ## Windows NLB (Network Load Balancer)
-Installing NLB (Brian Watson set this up on amp-ha1 and amp-ha2)
+
+Installing NLB (set this up on amp-ha1 and amp-ha2)
 
 Floating IP -> 10.87.1.90
 The floating IP ponints to both amp-ha1 and amp-ha2.  NLB only points to one server.  The other server
@@ -173,8 +178,7 @@ be better used by the application.
 ## How to SSH using POSIX 
 
 > ssh root@10.87.1.95
-> 3lects01ve!
-
+> 
 
 Failover Options – Single Site Single Subnet
 
@@ -485,6 +489,7 @@ db.inventory.remove({})
 Review 
 > db.BrokeredRequest.find({},{_id:0,ClientRequestDate:1,ClientTransactionID:1}).sort( { ClientRequestDate: 1 } )
 ## Replica Set Setup
+
 Windows Crap
 * download msi
 * Run installer - it will put the app here: 
@@ -774,6 +779,7 @@ The idea to take home is to show the count in the database and show we have not 
 * https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-using-aspnet-35-and-aspnet-45
 * https://blogs.msdn.microsoft.com/vijaysk/2012/10/11/iis-8-whats-new-website-settings/
 * https://www.upcloud.com/support/haproxy-load-balancer-centos/
+<<<<<<< HEAD
 * https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
 * https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 * https://docs.mongodb.com/manual/tutorial/deploy-replica-set/
@@ -813,3 +819,5 @@ Vendor
 	"SettingAppendSerialNo" : false,
 	"SettingSourceSerialNo" : null
 }
+=======
+* https://www.iis.net/configreference/system.webserver/httpprotocol/customheaders
