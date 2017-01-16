@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using MultiSpeakBrokerLoadTest.proxy;
 using NLog;
 
@@ -56,7 +59,7 @@ namespace MultiSpeakBrokerLoadTest
 		{
 			var wallTime = new System.Diagnostics.Stopwatch();
 			var client = new MDM_Server();
-			client.Url = "http://10.87.1.95/MultiSpeak/416/1/MDM_Server.asmx";
+			client.Url = "https://10.87.1.95/MultiSpeak/416/1/MDM_Server.asmx";
 			StdOut(client.Url);
 
 			//Add the security - once for the entire batch
@@ -93,6 +96,14 @@ namespace MultiSpeakBrokerLoadTest
 						units = timeUnits.Hours,
 						Value = 1
 					};
+
+					//self-signed cert override
+					ServicePointManager.ServerCertificateValidationCallback = delegate (
+						object obj, X509Certificate certificate, X509Chain chain,
+
+						SslPolicyErrors errors) {
+							return (true);
+						};
 
 					var results = client.InitiateMeterReadingsByMeterID(meters, responseURL, transactionID, lifespan);
 
